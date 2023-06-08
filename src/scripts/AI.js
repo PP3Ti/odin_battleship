@@ -1,17 +1,18 @@
 import _ from 'lodash'
 
 class AI {
-  constructor(ships, board) {
+  constructor(ships, board, enemyBoard) {
     this.ships = ships
     this.board = board
+    this.enemyBoard = enemyBoard
   }
 
-  getValidPositions = (ship, board) => {
+  getValidPositions = (ship) => {
     let validPositions = []
-    board.coords.forEach(coord => {
+    this.board.coords.forEach(coord => {
       ship.place(coord)
-      if ((_.intersectionWith(ship.coords, board.coords, _.isEqual).length === ship.length) 
-          && (_.intersectionWith(ship.coords, board.takenCoords, _.isEqual).length === 0)) {
+      if ((_.intersectionWith(ship.coords, this.board.coords, _.isEqual).length === ship.length) 
+          && (_.intersectionWith(ship.coords, this.board.takenCoords, _.isEqual).length === 0)) {
         validPositions.push(coord)
       }
       ship.coords = []
@@ -19,24 +20,29 @@ class AI {
     return validPositions
   }
 
-  getRandomValidCoord = (ship, board) => {
-    const validCoords = this.getValidPositions(ship, board)
+  getRandomValidCoord = (ship) => {
+    const validCoords = this.getValidPositions(ship, this.board)
     let index = Math.floor(Math.random() * validCoords.length)
     return validCoords[index]
   }
 
-  placeShips = (ships, board) => {
-    ships.forEach(ship => {
-      ship.place(this.getRandomValidCoord(ship, board))
-      board.takenCoords.push(...ship.coords)
+  placeShips = () => {
+    this.ships.forEach(ship => {
+      ship.place(this.getRandomValidCoord(ship, this.board))
+      this.board.takenCoords.push(...ship.coords)
     })
   }
 
-  shipAlignmentRandomizer = (ships) => {
-    ships.forEach(ship => {
-      const flip = Math.floor(Math.random() * 2) 
-      flip === 0 ? ship.swapToVertical() : ship.swapToHorizontal()
+  shipAlignmentRandomizer = () => {
+    this.ships.forEach(ship => {
+      Math.floor(Math.random() * 2) === 0 ? ship.swapToVertical() : ship.swapToHorizontal()
     })
+  }
+
+  attack = () => {
+    let validCoords = _.differenceWith(this.enemyBoard.coords, this.enemyBoard.attackedCoords, _.isEqual)
+    const index = Math.floor(Math.random() * validCoords.length)
+    this.enemyBoard.receiveAttack(validCoords[index])
   }
 }
 
