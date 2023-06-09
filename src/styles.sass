@@ -1,6 +1,77 @@
-body
-  height: 100px
-  background: green
+* 
+  margin: 0
+  padding: 0
 
-.white
-  background: white
+$bgcolor: #F1F6F9
+$darkbg: #9BA4B5
+$darktext: #212A3E
+
+body
+  height: 100dvh
+  background: $bgcolor
+  display: grid
+  grid-template: 120px minmax(750px, 1fr) 50px / 1fr 
+  font-family: Arial, Helvetica, sans-serif
+
+header, footer
+  display: flex
+  justify-content: center
+  align-items: center
+  color: $darktext
+  font-size: 4rem
+  font-weight: bold
+  background: $darkbg
+
+main
+  display: flex
+  justify-content: center
+
+.content
+  display: flex
+  flex-direction: column
+  width: 1000px
+  height: 100%
+  align-items: center
+  justify-content: space-evenly
+
+.announcer
+  font-size: 3rem
+  font-style: italic
+
+.start
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  height: 550px
+  width: 700px
+
+  display: grid
+  grid-template: 100px / 250px 1fr
+
+  .instruction
+    display: grid
+    place-items: center
+    grid-column: span 2
+    font-size: 2rem
+    font-style: italic
+    color: $darktext
+
+  
+
+
+.boards, .playerBoard
+  display: flex
+  gap: 30px
+  th
+    color: $darktext
+    font-size: 2rem
+    padding-bottom: 5px
+  td
+    height: 40px
+    width: 40px
+    border: 1px solid $darktext
+  td:hover
+    background: rgba($darkbg, 0.3)
+
+footer
+  font-size: 1rem
