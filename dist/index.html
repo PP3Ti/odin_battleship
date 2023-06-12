@@ -10,12 +10,56 @@
 <body>
   <header>Battleship</header>
   <dialog class="start">
-    <div class="instruction">Place your ships!</div>
+    <div class="startWrapper">
+      <div class="instruction">Place your ships! 
+        <span style="font-size: 1rem;">Choose a ship by clicking on it, rotate ships by right clicking</span>
+      </div>
     <div class="leftContainer">
-      <div class="ships"></div>
-      <button class="startGameButton">Start Game</button>
+      <div class="ships">
+        <table class ='ship' id="carrier">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table class ='ship' id="battleship">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table class ='ship' id="cruiser">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table class ='ship' id="submarine">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table class ='ship' id="destroyer">
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+      <div class="buttons">
+        <button class="resetShipsButton">Reset ships</button>
+        <button class="startGameButton">Start Game</button>
+      </div>
     </div>
-    <table class="playerBoard">
+    <table class="playerBoardStart">
       <tr>
         <td></td>
         <td></td>
@@ -137,6 +181,7 @@
         <td></td>
       </tr>
     </table>
+    </div>
   </dialog>
   <main>
     <div class="content">

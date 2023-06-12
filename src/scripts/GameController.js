@@ -34,4 +34,4 @@ const turn = ([x, y]) => {
   
 }
 
-export default { Pregame, Aftergame, turn }
+export { Pregame, Aftergame, turn }
