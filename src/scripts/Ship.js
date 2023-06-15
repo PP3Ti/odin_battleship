@@ -16,7 +16,6 @@ export default class Ship {
   }
   place = ([x, y]) => {
     this.coords.push([x, y])
-    this.isPlaced = true
     if (this.horizontal) {
       for (let i = 0; i < this.length -1; i++) {
         this.coords.push([x + i + 1, y])

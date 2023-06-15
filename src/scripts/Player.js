@@ -26,6 +26,7 @@ export default class Player {
       if (_.isEqual(coord, [x, y])) {
         ship.place([x, y])
         this.board.takenCoords.push(...ship.coords)
+        ship.isPlaced = true
       }
     }
   }
