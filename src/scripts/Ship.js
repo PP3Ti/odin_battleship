@@ -5,6 +5,7 @@ export default class Ship {
     this.sunk = false
     this.horizontal = horizontal
     this.coords = []
+    this.isPlaced = false
   }
   isSunk = () => {
     this.hits >= this.length ? this.sunk = true : this.sunk = false
@@ -15,6 +16,7 @@ export default class Ship {
   }
   place = ([x, y]) => {
     this.coords.push([x, y])
+    this.isPlaced = true
     if (this.horizontal) {
       for (let i = 0; i < this.length -1; i++) {
         this.coords.push([x + i + 1, y])

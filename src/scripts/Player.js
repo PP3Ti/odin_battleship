@@ -22,32 +22,20 @@ export default class Player {
 
   placeShip = (ship, [x, y]) => {
     const validCoords = this.getValidPositions(ship, this.board)
-    let invalid = true
     for (const coord of validCoords) {
       if (_.isEqual(coord, [x, y])) {
         ship.place([x, y])
         this.board.takenCoords.push(...ship.coords)
-        invalid = false
-        break
-      } else {
-        invalid = true
       }
     }
-    return invalid ? 'Ship cannot be placed here' : 'Ship placed'
   }
 
   attack = ([x, y]) => {
     const validCoords = _.differenceWith(this.enemyBoard.coords, this.enemyBoard.attackedCoords, _.isEqual)
-    let invalid = true
     for (const coord of validCoords) {
       if (_.isEqual(coord, [x, y])) {
         this.enemyBoard.receiveAttack([x, y])
-        invalid = false
-        break
-      } else {
-        invalid = true
       }
     }
-    return invalid ? 'Position cannot be attacked' : 'Position attacked'
   }
 }

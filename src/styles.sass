@@ -86,9 +86,22 @@ main
       tr:hover
         box-shadow: 0 0 5px $darkbg
 
+    .currentShip
+      height: 40%
+      width: 99%
+      border: 1px solid $darktext
+      display: grid
+      place-items: center
+
   .playerBoardStart
     margin: 10px
     place-self: center 
+  
+  .validPos
+    background: green
+
+  .invalidPos
+    background: red
 
 .boards, .playerBoard, .playerBoardStart
   display: flex

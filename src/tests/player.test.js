@@ -10,7 +10,7 @@ test('Can place a ship at a valid position', () => {
   const ships = [ship1]
   const player = new Player(ships, board)
 
-  expect(player.placeShip(ship1, [1, 1])).toBe('Ship placed')
+  player.placeShip(ships[0], [2, 1])
   expect(board.takenCoords.length).toBe(2)
 })
 test('Ship cannot be placed at invalid location', () => {
@@ -20,7 +20,7 @@ test('Ship cannot be placed at invalid location', () => {
   const ships = [ship1]
   const player = new Player(ships, board)
 
-  expect(player.placeShip(ship1, [0, 0])).toBe('Ship cannot be placed here')
+  player.placeShip(ships[0], [10, 10])
   expect(board.takenCoords.length).toBe(0)
 })
 
@@ -33,8 +33,8 @@ test('Can attack enemy board if a position has not been attacked yet', () => {
   const ships = [ship1]
   const player = new Player(ships, board, enemyBoard)
 
-  expect(player.attack([1, 1])).toBe('Position attacked')
+  player.attack([1, 1])
   expect(enemyBoard.attackedCoords.length).toBe(1)
-  expect(player.attack([4, 4])).toBe('Position cannot be attacked')
+  player.attack([1, 1])
   expect(enemyBoard.attackedCoords.length).toBe(1)
 })

@@ -17,13 +17,14 @@ const Pregame = (() => {
   ai.shipAlignmentRandomizer()
   ai.placeShips()
 
-  const player = new Player(ships, playerBoard, AIboard)
+  const playerShips = []
+  playerShips.push(new Ship(5, true), new Ship(4, true), new Ship(3, true), new Ship(3, true), new Ship(2, true))
+  const player = new Player(playerShips, playerBoard, AIboard)
 
   return {
     ai,
     player 
   }
-
 })()
 
 const Aftergame = (() => {
