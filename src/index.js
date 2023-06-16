@@ -1,5 +1,5 @@
 import './styles.sass'
-import { Pregame, Aftergame, turn } from './scripts/GameController'
+import { Pregame, turn } from './scripts/GameController'
 import _ from 'lodash'
 
 const setup = (() => {
