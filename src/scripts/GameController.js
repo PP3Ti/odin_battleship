@@ -31,8 +31,9 @@ const Aftergame = (() => {
 
 })()
 
-const turn = ([x, y]) => {
-  
+const turn = (player, ai, [x, y]) => {
+  player.attack([x, y])
+  ai.attack()
 }
 
 export { Pregame, Aftergame, turn }

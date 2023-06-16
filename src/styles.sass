@@ -34,9 +34,18 @@ main
   align-items: center
   justify-content: space-evenly
 
+  .posAttacked
+    background: rgba(green, 0.4)
+
+  .posHit
+    background: rgba(red, 0.4)
+
+
 .announcer
-  font-size: 3rem
+  font-size: 2rem
   font-style: italic
+  display: grid
+  place-content: center
 
 .start::backdrop
   background: rgba($darkbg, 0.9)
@@ -124,7 +133,6 @@ main
   .takenPosition
     background: $darkbg
 
-
 .boards, .playerBoard, .playerBoardStart
   display: flex
   gap: 30px
@@ -136,8 +144,31 @@ main
     height: 40px
     width: 40px
     border: 1px solid $darktext
+    text-align: center
+
+.AIboard, .playerBoardStart
   td:hover
     background: rgba($darkbg, 0.3)
+
+.AIboard 
+  .takenPosition
+    background: $bgcolor
+
+.playerBoard
+  .takenPosition
+    background: $darkbg
+
+.playAgainButton
+  padding: 8px 16px
+  margin-top: 20px
+  border: 1px solid $darktext
+  border-radius: 8px
+  background: $bgcolor
+  font-size: 2rem
+  box-shadow: 0 0 5px 0 $darktext
+
+.playAgainButton:hover 
+  background: rgba($darkbg, 0.6)
 
 footer
   font-size: 1rem

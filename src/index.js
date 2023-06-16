@@ -1,6 +1,6 @@
 import './styles.sass'
 import { Pregame, Aftergame, turn } from './scripts/GameController'
-import _, { take } from 'lodash'
+import _ from 'lodash'
 
 const setup = (() => {
   const pregame = Pregame
@@ -14,7 +14,7 @@ const setup = (() => {
 })()
 
 const DOMelements = (() => {
-  
+  const body = document.querySelector('body')
   const startDialog = document.querySelector('.start')
   const carrier = document.getElementById('carrier')
   const battleship = document.getElementById('battleship')
@@ -29,9 +29,17 @@ const DOMelements = (() => {
   const startBoardSquares = startBoard.querySelectorAll('td')
 
   const playerBoard = document.querySelector('.playerBoard')
+  const playerBoardSquares = playerBoard.querySelectorAll('td')
   const computerBoard = document.querySelector('.AIboard')
+  const computerBoardSquares = computerBoard.querySelectorAll('td')
+
+  const announcer = document.querySelector('.announcer')
+  const playAgainButton = document.createElement('button')
+  playAgainButton.classList.add('playAgainButton')
+  playAgainButton.textContent = 'Play Again!'
 
   return {
+    body,
     startDialog,
     carrier, 
     battleship,
@@ -44,7 +52,11 @@ const DOMelements = (() => {
     resetShipsButton,
     startGameButton,
     playerBoard,
-    computerBoard
+    playerBoardSquares,
+    computerBoard,
+    computerBoardSquares,
+    announcer,
+    playAgainButton
   }
 })()
 
@@ -333,6 +345,8 @@ const DOMmethodsForStartScreen = (() => {
     })
     if (allShipsPlaced) {
       DOMelements.startDialog.close()
+      DOMmethodsForGame.displayPlacedShipsPlayer()
+      DOMmethodsForGame.displayPlacedShipsComputer()
     } else {
       DOMelements.currentShipDisplay.replaceChildren()
       DOMelements.currentShipDisplay.textContent = 'Place all ships before starting'
@@ -341,6 +355,168 @@ const DOMmethodsForStartScreen = (() => {
 })()
 
 const DOMmethodsForGame = (() => {
-  console.log(DOMelements.computerBoard)
+  let coords = []
+  for (let y = 10; y > 0; y--) {
+    for (let x = 1; x < 11; x++) {
+      coords.push([x, y])
+    }
+  }
+  let playerBoardSquaresArr = Array.from(DOMelements.playerBoardSquares)
+  for (let i = 0; i < playerBoardSquaresArr.length; i++) {
+    playerBoardSquaresArr[i].setAttribute('class', coords[0])
+    coords.splice(0, 1)
+  }
+
+  const displayPlacedShipsPlayer = () => {
+    const takenCoords = setup.player.board.takenCoords
+    let squareIDlist = []
+    let indexesToColor = []
+    DOMelements.playerBoardSquares.forEach(e => {
+      const input = e.classList[0].split(',')
+      for (let i = 0; i < input.length; i++) {
+        input[i] = Number(input[i])
+      }
+      squareIDlist.push(input)
+    })
+    takenCoords.forEach(coord => {
+      squareIDlist.forEach(id => {
+        if (_.isEqual(coord, id)) {
+          indexesToColor.push(squareIDlist.indexOf(id))
+        }
+      })
+    })
+    for (const index of indexesToColor) {
+      DOMelements.playerBoardSquares[index].classList.add('takenPosition')
+    }
+  }
+  const displayPlacedShipsComputer = () => {
+    const takenCoords = setup.ai.board.takenCoords
+    let squareIDlist = []
+    let indexesToColor = []
+    DOMelements.computerBoardSquares.forEach(e => {
+      const input = e.classList[0].split(',')
+      for (let i = 0; i < input.length; i++) {
+        input[i] = Number(input[i])
+      }
+      squareIDlist.push(input)
+    })
+    takenCoords.forEach(coord => {
+      squareIDlist.forEach(id => {
+        if (_.isEqual(coord, id)) {
+          indexesToColor.push(squareIDlist.indexOf(id))
+        }
+      })
+    })
+    for (const index of indexesToColor) {
+      DOMelements.computerBoardSquares[index].classList.add('takenPosition')
+    }
+  }
+
+  for (let y = 10; y > 0; y--) {
+    for (let x = 1; x < 11; x++) {
+      coords.push([x, y])
+    }
+  }
+  const computerBoardSquaresArr = Array.from(DOMelements.computerBoardSquares)
+  for (let i = 0; i < computerBoardSquaresArr.length; i++) {
+    computerBoardSquaresArr[i].setAttribute('class', coords[0])
+    coords.splice(0, 1)
+  }
+
+  const displayAttackedCoordsComputer = () => {
+    const attackedCoords = setup.ai.board.attackedCoords
+    let squareIDlist = []
+    let attackedIndexes = []
+    DOMelements.computerBoardSquares.forEach(e => {
+      const input = e.classList[0].split(',')
+      for (let i = 0; i < input.length; i++) {
+        input[i] = Number(input[i])
+      }
+      squareIDlist.push(input)
+    })
+    attackedCoords.forEach(coord => {
+      squareIDlist.forEach(id => {
+        if (_.isEqual(coord, id)) {
+          attackedIndexes.push(squareIDlist.indexOf(id))
+        }
+      })
+    })
+    for (const index of attackedIndexes) {
+      if (DOMelements.computerBoardSquares[index].classList.contains('takenPosition')) {
+        DOMelements.computerBoardSquares[index].classList.remove('takenPosition')
+        DOMelements.computerBoardSquares[index].classList.add('posHit')
+        DOMelements.computerBoardSquares[index].textContent = 'x'
+      } else {
+        DOMelements.computerBoardSquares[index].classList.add('posAttacked')
+      }
+    }
+
+  }
+  const displayAttackedCoordsPlayer = () => {
+    const attackedCoords = setup.player.board.attackedCoords
+    let squareIDlist = []
+    let attackedIndexes = []
+    DOMelements.playerBoardSquares.forEach(e => {
+      const input = e.classList[0].split(',')
+      for (let i = 0; i < input.length; i++) {
+        input[i] = Number(input[i])
+      }
+      squareIDlist.push(input)
+    })
+    attackedCoords.forEach(coord => {
+      squareIDlist.forEach(id => {
+        if (_.isEqual(coord, id)) {
+          attackedIndexes.push(squareIDlist.indexOf(id))
+        }
+      })
+    })
+    for (const index of attackedIndexes) {
+      if (DOMelements.playerBoardSquares[index].classList.contains('takenPosition')) {
+        DOMelements.playerBoardSquares[index].classList.remove('takenPosition')
+        DOMelements.playerBoardSquares[index].textContent = 'x'
+        DOMelements.playerBoardSquares[index].classList.add('posHit')
+      } else {
+        DOMelements.playerBoardSquares[index].classList.add('posAttacked')
+      }
+    }
+
+  }
+  computerBoardSquaresArr.forEach(square => {
+    square.addEventListener('click', (e) => {
+      const targetCoord = e.target.classList[0].split(',')
+      for (let i = 0; i < targetCoord.length; i++) {
+        targetCoord[i] = Number(targetCoord[i])
+      }
+      turn(setup.player, setup.ai, targetCoord)
+      displayAttackedCoordsComputer()
+      displayAttackedCoordsPlayer()
+      if (setup.player.board.finished) {
+        DOMelements.announcer.textContent = 'The computer won!'
+        DOMelements.announcer.appendChild(DOMelements.playAgainButton)
+        DOMelements.body.replaceWith(DOMelements.body.cloneNode(true))
+        const playAgainButton = document.querySelector('.playAgainButton')
+        playAgainButton.addEventListener('click', () => {
+          location.reload()
+        })
+        console.log('computer won')
+        return
+      } else if (setup.ai.board.finished) {
+        DOMelements.announcer.textContent = 'The player won!'
+        DOMelements.announcer.appendChild(DOMelements.playAgainButton)
+        DOMelements.body.replaceWith(DOMelements.body.cloneNode(true))
+        const playAgainButton = document.querySelector('.playAgainButton')
+        playAgainButton.addEventListener('click', () => {
+          location.reload()
+        })
+        console.log('player won')
+        return
+      }
+    })
+  })
+
+  return {
+    displayPlacedShipsPlayer,
+    displayPlacedShipsComputer
+  }
 })()
 
